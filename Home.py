@@ -27,29 +27,7 @@ st.set_page_config(page_title="Home", page_icon="🏠", layout="wide")
 # importing geopy library and Nominatim class
 
 st.title("Projected impacts of climate change on your local temprature and take action today! ")
-video_file = open(
-    'pexels-mikhail-nilov-8318649 (1440p).mp4', 'rb')
-video_bytes = video_file.read()
-st.video(video_bytes)
-st.write("Let's listen to What ***Climate Change*** is:")
 
-
-def autoplay_audio(file_path: str):
-    with open(file_path, "rb") as f:
-        data = f.read()
-        b64 = base64.b64encode(data).decode()
-        md = f"""
-            <audio controls autoplay="true">
-            <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
-            </audio>
-            """
-        st.markdown(
-            md,
-            unsafe_allow_html=True,
-        )
-
-
-autoplay_audio("En-Climate_change.ogg")
 
 
 with st.sidebar:
