@@ -42,7 +42,6 @@ import joblib
 from sklearn import preprocessing
 import pydeck as pdk
 
-st.set_page_config(page_title="Home", page_icon="🏠", layout="wide")
 # importing geopy library and Nominatim class
 
 st.title("Projected impacts of climate change on your local temprature and take action today! ")
@@ -105,7 +104,7 @@ t = np.linspace(0, seconds, seconds * sample_rate, False)
 # Generate a 440 Hz sine wave
 note_la = np.sin(frequency_la * t * 2 * np.pi)
 
-st.set_page_config(page_title="ML Predictions", page_icon="🧠", layout="wide")
+
 
 st.header("Local Area Temprature Prediction")
 st.write("In this part, the robust machine learning will help you project the local temprature rise.")
