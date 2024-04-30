@@ -10,14 +10,13 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
 from sklearn.impute import SimpleImputer
-st.set_page_config(page_title="Data Visualization",
-                   page_icon="📊", layout="wide")
+st.set_page_config(page_title="Data Visualization", layout="wide")
 # Function to load data
 
 
 def load_data():
     # Modify the path according to your file location
-    df1 = pd.read_excel('Projected_impacts_datasheet_11.24.2021.xlsx')
+    df1 = pd.read_excel('https://github.com/locquangnguyen8/climateweb/blob/main/Projected_impacts_datasheet_11.24.2021.xlsx')
     df1.columns = df1.columns.str.replace(' ', '_')
     # Dictionary with new column names
     new_column_names = {
