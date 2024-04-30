@@ -55,7 +55,7 @@ st.image('https://media.springernature.com/lw685/springer-static/image/art%3A10.
 st.header("Interactive Visualization")
 def load_data():
     # Modify the path according to your file location
-    df1 = pd.read_excel('https://github.com/locquangnguyen8/climateweb/blob/main/Projected_impacts_datasheet_11.24.2021.xlsx')
+    df1 = pd.read_excel('Projected_impacts_datasheet_11.24.2021.xlsx')
     df1.columns = df1.columns.str.replace(' ', '_')
     # Dictionary with new column names
     new_column_names = {
