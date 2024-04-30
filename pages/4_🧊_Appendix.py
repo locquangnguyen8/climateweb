@@ -27,7 +27,8 @@ tab1.write("The Mean Square Error of the algorithm is 0.0057")
 tab1.subheader("Reference Data")
 
 tab1.write("**Data that has been used to train the predictive model:**")
-
+df9 = pd.read_csv("Projected_impacts_datasheet_11.24.2021.csv")
+tab1.dataframe(df9)
 # Using markdown to create a link that looks like a button
 tab2.subheader("Author Profile")
 tab2.write("**Quang-Loc Nguyen** is a Research Assistant in the SP Jain School of Global Management. His focuses are, but not limited to, Climate Change, Economics, Social Science, and Data Science. **Loc** has published widely in top-tier journals such as Nature: *npj Climate Action*, SPRINGER: *Journal of Environmental Studies and Sciences*, the ABDC list: *Journal of Risk and Financial Management*, and Q1, Q2 ranked journals.")
