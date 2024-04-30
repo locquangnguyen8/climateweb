@@ -15,6 +15,45 @@ st.set_page_config(page_title="Data Visualization",
 # Function to load data
 
 
+
+# UI for file upload and data manipulation
+st.header("Data Visualization")
+st.write("Sample Figures from the Data")
+st.image('https://media.springernature.com/lw685/springer-static/image/art%3A10.1038%2Fs41597-022-01150-7/MediaObjects/41597_2022_1150_Fig2_HTML.png?as=webp',
+         caption='(a) By global temperature rise, (b) By projected time periods (midpoint years) and climate scenarios, (c) Regions and crop species, and (d) adaptation options and crop species. (d) Crops and adaptation options')
+st.image('https://media.springernature.com/lw685/springer-static/image/art%3A10.1007%2Fs10584-011-0156-z/MediaObjects/10584_2011_156_Fig3_HTML.gif?as=webp',
+         caption='Emission Concentrations based on different Senarios')
+
+# st.write("The Local Temprature Change Frequency Visualisation:")
+# chart_data = df['Local Temperature Rise from 2005']
+# st.bar_chart(chart_data)
+# st.line_chart(chart_data)
+
+# Assuming `file_details` shows some details about the data
+# Uncomment and modify according to your app's context
+# file_details = "Some details about the data file"
+# st.write(file_details)
+
+# st.write("First five data rows")
+# st.write(df.head())
+
+# st.write("Missing values table")
+# Calculate missing values and convert to DataFrame
+# missing_values_count = df.isna().sum().to_frame().T
+
+# Optionally, you can rename the index to something more descriptive
+# missing_values_count.index = ['Missing Values Count']
+
+# Display the transposed DataFrame
+# st.write(missing_values_count)
+
+# st.write("Data Shape")
+# st.write(df.shape)
+
+# st.write("Basic Statistical summary")
+# st.write(df.describe())
+
+st.header("Interactive Visualization")
 def load_data():
     # Modify the path according to your file location
     df1 = pd.read_excel('Projected_impacts_datasheet_11.24.2021.xlsx')
@@ -64,44 +103,6 @@ def encode_columns(df, columns):
 # Load and preprocess data
 df1 = load_data()
 df = load_data1()
-# UI for file upload and data manipulation
-st.header("Data Visualization")
-st.write("Sample Figures from the Data")
-st.image('https://media.springernature.com/lw685/springer-static/image/art%3A10.1038%2Fs41597-022-01150-7/MediaObjects/41597_2022_1150_Fig2_HTML.png?as=webp',
-         caption='(a) By global temperature rise, (b) By projected time periods (midpoint years) and climate scenarios, (c) Regions and crop species, and (d) adaptation options and crop species. (d) Crops and adaptation options')
-st.image('https://media.springernature.com/lw685/springer-static/image/art%3A10.1007%2Fs10584-011-0156-z/MediaObjects/10584_2011_156_Fig3_HTML.gif?as=webp',
-         caption='Emission Concentrations based on different Senarios')
-
-# st.write("The Local Temprature Change Frequency Visualisation:")
-# chart_data = df['Local Temperature Rise from 2005']
-# st.bar_chart(chart_data)
-# st.line_chart(chart_data)
-
-# Assuming `file_details` shows some details about the data
-# Uncomment and modify according to your app's context
-# file_details = "Some details about the data file"
-# st.write(file_details)
-
-# st.write("First five data rows")
-# st.write(df.head())
-
-# st.write("Missing values table")
-# Calculate missing values and convert to DataFrame
-# missing_values_count = df.isna().sum().to_frame().T
-
-# Optionally, you can rename the index to something more descriptive
-# missing_values_count.index = ['Missing Values Count']
-
-# Display the transposed DataFrame
-# st.write(missing_values_count)
-
-# st.write("Data Shape")
-# st.write(df.shape)
-
-# st.write("Basic Statistical summary")
-# st.write(df.describe())
-
-st.header("Interactive Visualization")
 categorical_columns = df.select_dtypes(
     include=['object', 'category', 'bool']).columns
 categorical_cols = st.multiselect(
