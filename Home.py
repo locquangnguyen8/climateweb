@@ -182,6 +182,7 @@ Cultivar = st.radio(
     'Has Cutltivar Deleloped in the Local Community?', ['Yes', 'No'])
 Adaptation_type = st.selectbox('Define Adaption Type: ', [
                                'Combined', 'Cultivar', 'Fertiliser', 'Irrigation', 'No', 'Others'])
+assert p != "", "Please Specify The Location!"
 location = geolocator.geocode(p)
 # st.write((location.latitude, location.longitude))
 latitude = location.latitude
@@ -213,7 +214,8 @@ data = [
     Irrigation,
     Cultivar,
     Adaptation_type]
-
+prediction = 0
+x = 0
 if all(data):
     df = pd.DataFrame([data], columns=columns)
     st.write(df)  # Display the DataFrame
