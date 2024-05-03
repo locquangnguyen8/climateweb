@@ -21,6 +21,7 @@ st.set_page_config(page_title="ML Predictions", page_icon="🧠", layout="wide")
 
 st.header("Local Area Temprature Prediction")
 st.write("In this part, the robust machine learning will help you project the local temprature rise.")
+st.write("The model considers various factors such as historical temperature trends, geographical characteristics, and agricultural data to provide accurate predictions. Thus, Please fill in all information below to get predicted temperature raise in your location.")
 
 Global_delta_T_from_2005 = st.number_input(
     'Insert Global Temperature Rise from 2005: ')
@@ -96,9 +97,13 @@ Cultivar = st.radio(
 Adaptation_type = st.selectbox('Define Adaption Type: ', [
                                'Combined', 'Cultivar', 'Fertiliser', 'Irrigation', 'No', 'Others'])
 location = geolocator.geocode(p)
-# st.write((location.latitude, location.longitude))
-latitude = location.latitude
-longitude = location.longitude
+if not p:
+    latitude = 0
+    longitude = 0
+else:
+    # st.write((location.latitude, location.longitude))
+    latitude = location.latitude
+    longitude = location.longitude
 columns = [
     'Global_delta_T_from_2005',
     'latitude',
@@ -126,7 +131,8 @@ data = [
     Irrigation,
     Cultivar,
     Adaptation_type]
-
+prediction = 0
+x = 0
 if all(data):
     df = pd.DataFrame([data], columns=columns)
     st.write(df)  # Display the DataFrame
@@ -148,8 +154,11 @@ if all(data):
     prediction = model.predict(transformed_data)
     x = round(prediction[0], 2)
     # Display the prediction
-    st.write(
-        f"**The {p}'s temprature in {Future_Mid_point} will be increased by:**", x)
+    st.markdown(f'''
+    ## :red[**The {p}'s temprature in {Future_Mid_point} will be increased by {x} Celsius degree!**]''')
+else:
+    st.markdown('''
+    :red["**Please fill in all requirements!**".]''')
 # calculate prediction interval
 interval = 1.96 * 0.00462
 lower, upper = round(x - interval, 3), round(x + interval, 3)
@@ -159,19 +168,19 @@ st.markdown('''
     :red["**The local temprature rise directly affects crop growth and yield!**".]''')
 
 st.write("Summary statistics of climate change impacts (average) on four major crops expresses as ")
+
+st.write("**Per Celsius Degree Raise, The Percentage of Crops Production Will Be Lost (% °C−1)**:")
+col1, col2, col3, col4 = st.columns(4)
+col1.metric("Maize", "−13.5%")
+col2.metric("Rice", "-2.6%")
+col3.metric("Soybean", "-8.8%")
+col4.metric("Wheat", "-5.6%")
 st.write("**Per Decade Impact**:")
 col1, col2, col3, col4 = st.columns(4)
-col1.metric("Maize", "−3.9")
-col2.metric("Rice", "-1.4")
-col3.metric("Soybean", "-2.6")
-col4.metric("Wheat", "-1.8")
-
-st.write("**Per Degree Impact (% °C−1)**:")
-col1, col2, col3, col4 = st.columns(4)
-col1.metric("Maize", "−13.5")
-col2.metric("Rice", "-2.6")
-col3.metric("Soybean", "-8.8")
-col4.metric("Wheat", "-5.6")
+col1.metric("Maize", "−3.9%")
+col2.metric("Rice", "-1.4%")
+col3.metric("Soybean", "-2.6%")
+col4.metric("Wheat", "-1.8%")
 
 st.write('Interpretation in Mathematic Equation:')
 st.latex(r'''
