@@ -19,11 +19,11 @@ import pydeck as pdk
 
 st.set_page_config(page_title="ML Predictions", page_icon="🧠", layout="wide")
 
-st.header("Local Area Temprature Prediction")
+st.header("Local Area Temprature Raise Prediction")
 st.write("In this part, the robust machine learning will help you project the local temprature rise.")
-
+st.write("The model considers various factors such as historical temperature trends, geographical characteristics, and agricultural data to provide accurate predictions. Thus, Please fill in all information below to get predicted temperature raise in your location.")
 Global_delta_T_from_2005 = st.number_input(
-    'Insert Global Temperature Rise from 2005: ')
+    'Insert Global Temperature Rise from 2005 (e.g., 0-5): ')
 # calling the Nominatim tool and create Nominatim class
 geolocator = Nominatim(user_agent="App_name")
 p = st.text_input("Enter your address")
@@ -39,10 +39,10 @@ t = p.split(' ')[-1]
 
 Climate_scenario = st.selectbox('Pick a Climate Scenario: ', ['RCP8.5', 'RCP4.5', 'RCP6.0', 'RCP2.6', 'A2', 'B2',
                                                               'Others', 'A1B', 'B1', 'A1FI, B1'])
-_multi2 = '''This is climate-scenario-based simulations: “RCP”, “RCP2.6”, “RCP6.0”, “RCP4.5”, “RCP8.5”, “CMIP5”, and “CMIP6”. 
-RCP stands for the Representative Concentration Pathways, and each RCP corresponds to a greenhouse gas concentration trajectory describing different 
-future greenhouse gas emission levels. The number followed by RCP is the level of radiative forcing (Wm−2) 
-reached at the end of the 21st century, 
+_multi2 = '''This is climate-scenario-based simulations: “RCP”, “RCP2.6”, “RCP6.0”, “RCP4.5”, “RCP8.5”, “CMIP5”, and “CMIP6”.
+RCP stands for the Representative Concentration Pathways, and each RCP corresponds to a greenhouse gas concentration trajectory describing different
+future greenhouse gas emission levels. The number followed by RCP is the level of radiative forcing (Wm−2)
+reached at the end of the 21st century,
 which increases with the volume of greenhouse gas emitted to the atmosphere.
 '''
 
@@ -60,7 +60,7 @@ expander.write_stream(stream_data2)
 # st.link_button("Find out more Pepresentative Concentration Pathways",
 # url="https://link.springer.com/article/10.1007/s10584-011-0148-z")
 st.markdown("""
-    <a style='display: block; text-align: center; background-color: #4CAF50; color: white; padding: 14px 20px; margin: 10px 0; border: none; cursor: pointer; width: 100%;' 
+    <a style='display: block; text-align: center; background-color: #4CAF50; color: white; padding: 14px 20px; margin: 10px 0; border: none; cursor: pointer; width: 100%;'
     href='https://link.springer.com/article/10.1007/s10584-011-0148-z' target='_blank'>Representative Concentration Pathways</a>
     """, unsafe_allow_html=True)
 Future_Mid_point = st.slider('Choose Future Year: ', 2000, 2110, 2024)
@@ -68,11 +68,11 @@ Current_Average_Temperature_area_weighted = st.number_input(
     'Insert Current Average Temperature: ')
 Country = t
 Time_slice = st.selectbox('Select Time Slice: ', ['EC', 'MC', 'NF'])
-_multi1 = '''This is the climate change adaptation for crops production sections. If the local government implements these options as ways to adapt crops to climate change, Please choose below adaptation options, which are categorised into fertiliser, irrigation, cultivar, soil organic matter management, planting time, tillage, and others. 
-Specifically, in the fertiliser option, if the amount and timing of fertiliser application are changed from the current conventional method, it is considered as adaptation. 
-In the irrigation option, if the simulation program determines the irrigation scheduling based on the crop growth, 
-climatic and soil moisture conditions, it can be deemed as adaptation because the management is adjusted to future climatic conditions. 
-If rainfed and irrigated conditions are simulated separately, it should not consider irrigation as an adaptation. 
+_multi1 = '''This is the climate change adaptation for crops production sections. If the local government implements these options as ways to adapt crops to climate change, Please choose below adaptation options, which are categorised into fertiliser, irrigation, cultivar, soil organic matter management, planting time, tillage, and others.
+Specifically, in the fertiliser option, if the amount and timing of fertiliser application are changed from the current conventional method, it is considered as adaptation.
+In the irrigation option, if the simulation program determines the irrigation scheduling based on the crop growth,
+climatic and soil moisture conditions, it can be deemed as adaptation because the management is adjusted to future climatic conditions.
+If rainfed and irrigated conditions are simulated separately, it should not consider irrigation as an adaptation.
 '''
 
 
@@ -95,11 +95,15 @@ Cultivar = st.radio(
     'Has Cutltivar Deleloped in the Local Community?', ['Yes', 'No'])
 Adaptation_type = st.selectbox('Define Adaption Type: ', [
                                'Combined', 'Cultivar', 'Fertiliser', 'Irrigation', 'No', 'Others'])
-assert p != "", "Please Specify The Location!"
 location = geolocator.geocode(p)
-# st.write((location.latitude, location.longitude))
-latitude = location.latitude
-longitude = location.longitude
+if not p:
+    latitude = 0
+    longitude = 0
+else:
+    # st.write((location.latitude, location.longitude))
+    latitude = location.latitude
+    longitude = location.longitude
+
 columns = [
     'Global_delta_T_from_2005',
     'latitude',
@@ -131,6 +135,7 @@ prediction = 0
 x = 0
 if all(data):
     df = pd.DataFrame([data], columns=columns)
+    st.write("The following columns are the input features for the prediction:")
     st.write(df)  # Display the DataFrame
 
     # Load the trained model
@@ -148,33 +153,42 @@ if all(data):
 
     # Make predictions using the loaded model
     prediction = model.predict(transformed_data)
+    assert prediction != "", "Please Fill all Input Requirements!"
+
     x = round(prediction[0], 2)
+    assert x != "", "Please Fill all Input Requirements!"
     # Display the prediction
-    st.write(
-        f"**The {p}'s temprature in {Future_Mid_point} will be increased by:**", x)
+    st.markdown(f'''
+    ## :red[**The {p}'s temprature in {Future_Mid_point} will be increased by {x} Celsius degree!**]''')
+
+else:
+    st.markdown('''
+    :red["**Please fill in all requirements!**".]''')
 # calculate prediction interval
 interval = 1.96 * 0.00462
+
 lower, upper = round(x - interval, 3), round(x + interval, 3)
+
 st.write(
     f"*The 95% confidence interval of the predicted temperature range from {lower} to {upper}*")
 st.markdown('''
     :red["**The local temprature rise directly affects crop growth and yield!**".]''')
 
 st.write("Summary statistics of climate change impacts (average) on four major crops expresses as ")
+
+
+st.write("**Per Celsius Degree Raise, The Percentage of Crops Production Will Be Lost (% °C−1)**:")
+col1, col2, col3, col4 = st.columns(4)
+col1.metric("Maize", "−13.5%")
+col2.metric("Rice", "-2.6%")
+col3.metric("Soybean", "-8.8%")
+col4.metric("Wheat", "-5.6%")
 st.write("**Per Decade Impact**:")
 col1, col2, col3, col4 = st.columns(4)
-col1.metric("Maize", "−3.9")
-col2.metric("Rice", "-1.4")
-col3.metric("Soybean", "-2.6")
-col4.metric("Wheat", "-1.8")
-
-st.write("**Per Degree Impact (% °C−1)**:")
-col1, col2, col3, col4 = st.columns(4)
-col1.metric("Maize", "−13.5")
-col2.metric("Rice", "-2.6")
-col3.metric("Soybean", "-8.8")
-col4.metric("Wheat", "-5.6")
-
+col1.metric("Maize", "−3.9%")
+col2.metric("Rice", "-1.4%")
+col3.metric("Soybean", "-2.6%")
+col4.metric("Wheat", "-1.8%")
 st.write('Interpretation in Mathematic Equation:')
 st.latex(r'''
     (-13.5*Maize - 2.6*Rice - 8.8*Soybean - 5.6*Wheat) * Degree Rise
